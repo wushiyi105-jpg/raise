@@ -1,0 +1,18 @@
+{
+  "achievements": [
+    {"text": "把对账脚本重写，每月人工核对从 3 天压到 4 小时", "impact": 9, "scope": "team", "quarter": "2026Q1"},
+    {"text": "带 2 个新人上手数据看板，两人 1 个月内独立交付", "impact": 7, "scope": "team", "quarter": "2026Q2"},
+    {"text": "推动跨部门指标口径统一，覆盖 4 个团队 12 张报表", "impact": 8, "scope": "org", "quarter": "2026Q2"},
+    {"text": "把客诉分类从 27 类收敛到 9 类，月均处理时长下降 22%", "impact": 7, "scope": "org", "quarter": "2026Q3"},
+    {"text": "整理了一份交接文档", "impact": 2, "scope": "team", "quarter": "2026Q3"},
+    {"text": "和产品一起把需求评审从 2 小时缩到 45 分钟，两周内落地 6 个需求", "impact": 6, "scope": "team", "quarter": "2026Q3"},
+    {"text": "负责的项目按时上线", "impact": 3, "scope": "team", "quarter": "2026Q4"}
+  ],
+  "levels": [
+    {"code": "P6", "years": 3, "need_count": 5, "need_scope": ["team", "org"]}
+  ],
+  "reviews": [
+    {"story": "对账脚本重写：当时每月结账要 3 天人工核对，我把脚本重写，压到 4 小时，结账提前 2 天。", "level": "P6", "sections": ["S", "T", "A", "R"]},
+    {"story": "客诉分类收敛：把 27 类并成 9 类，处理时长降了 22%。", "level": "P6", "sections": ["A", "R"]}
+  ]
+}
