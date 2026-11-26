@@ -48,7 +48,7 @@ def seed(db: Path = typer.Option(None)) -> None:
     console.print(f"已写入 {len(data['achievements'])} 条成果、{len(data['levels'])} 个职级")
 
 
-@app.command()
+@app.command("readiness")
 def readiness_cmd(level: str = typer.Option("", help="P6 这样"), db: Path = typer.Option(None)) -> None:
     """量化率、职级差距、复盘完整度。"""
     store = _store(_settings(db))
@@ -59,10 +59,9 @@ def readiness_cmd(level: str = typer.Option("", help="P6 这样"), db: Path = ty
     console.print(f"合计扣 {r.penalty_total} 分")
 
 
-app.command(name="readiness")(readiness_cmd)
 
 
-@app.command()
+@app.command("draft")
 def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> None:
     """模型起草（无 key 时不编）。"""
     s = _settings(db)
@@ -76,10 +75,9 @@ def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> N
         console.print("模型没开，只看 readiness")
 
 
-app.command(name="draft")(draft_cmd)
 
 
-@app.command()
+@app.command("check")
 def check_cmd(text: str = typer.Option(..., help="要检查的谈薪/材料稿"), db: Path = typer.Option(None)) -> None:
     """检查稿子里的数字与措辞。"""
     store = _store(_settings(db))
@@ -90,7 +88,6 @@ def check_cmd(text: str = typer.Option(..., help="要检查的谈薪/材料稿")
         console.print(f"  [yellow]{n}[/]")
 
 
-app.command(name="check")(check_cmd)
 
 
 @app.command()
