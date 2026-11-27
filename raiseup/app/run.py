@@ -14,6 +14,16 @@ from ..ports import LLMPort, StorePort
 PROMPT = (Path(__file__).resolve().parents[2] / "prompts" / "material.md").read_text(encoding="utf-8")
 
 
+def parse_json(text: str) -> dict:
+    """模型常把 JSON 包在 ```json 里；取出第一个完整对象再解析。"""
+    text = text.strip()
+    start = text.find("{")
+    end = text.rfind("}")
+    if start < 0 or end <= start:
+        raise ValueError("no json object")
+    return json.loads(text[start : end + 1])
+
+
 def readiness(store: StorePort, level: str | None = None) -> Readiness:
     return build(store.list_achievements(), store.level(level), store.list_reviews())
 
@@ -29,7 +39,7 @@ def draft(
         return "", []
     facts = [a.text for a in top(items, 6)]
     try:
-        data = json.loads(llm.write(PROMPT, "\n".join(facts)))
+        data = parse_json(llm.write(PROMPT, "\n".join(facts)))
     except Exception:  # noqa: BLE001
         return "", []
     text = str(data.get("text", ""))

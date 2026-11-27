@@ -9,6 +9,7 @@ import typer
 from rich.console import Console
 
 from ..adapters.llm import build_llm
+from ..adapters.notify import WebhookNotifier
 from ..adapters.store import SqliteStore
 from ..app.run import PROMPT, draft, readiness, script
 from ..config import Settings
@@ -30,6 +31,13 @@ def _settings(db: Path | None, port: int | None = None) -> Settings:
 
 def _store(settings: Settings) -> SqliteStore:
     return SqliteStore(settings.db_path)
+
+
+def _notify(settings: Settings, text: str) -> None:
+    if not text or not settings.webhook_url:
+        return
+    ok = WebhookNotifier(settings.webhook_url).send(text)
+    console.print(f"[dim]webhook {'ok' if ok else 'failed'}[/]")
 
 
 @app.command()
@@ -67,12 +75,18 @@ def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> N
     store = _store(s)
     llm = build_llm(s.llm_base_url, s.llm_api_key, s.llm_model, PROMPT) if s.llm_enabled else None
     text, notes = draft(store, s, level or None, llm)
+    body: list[str] = []
     if text:
         console.print(text)
+        body.append(text)
     for n in notes:
         console.print(f"  [yellow]{n}[/]")
+        body.append(n)
     if not text:
-        console.print("模型没开，只看 readiness")
+        line = "模型没开，只看 readiness"
+        console.print(line)
+        body.append(line)
+    _notify(s, "\n".join(body))
 
 
 @app.command("check")
