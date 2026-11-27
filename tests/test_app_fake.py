@@ -1,19 +1,24 @@
-"""主用例只依赖 ports：用 MagicMock 内存假实现，不建 SQLite 文件。"""
+"""真实内存 Store 跑 readiness：不建 SQLite，mypy 校验 StorePort。"""
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
-
 from raiseup.app.run import readiness
+from raiseup.domain.models import Achievement, Level, Review
 from raiseup.ports import StorePort
 
 
-def test_main_path_with_memory_store(tmp_path) -> None:
-    store = MagicMock(spec=StorePort)
-    store.level.return_value = None
-    store.list_achievements.return_value = []
-    store.list_reviews.return_value = []
-    
+class InMemoryStore:
+    def list_achievements(self) -> list[Achievement]:
+        return []
+
+    def level(self, code: str | None = None) -> Level | None:
+        return None
+
+    def list_reviews(self) -> list[Review]:
+        return []
+
+
+def test_readiness_with_memory_store() -> None:
+    store: StorePort = InMemoryStore()
     out = readiness(store)
-    assert out is not None
-    assert not (tmp_path / "app.db").exists()
+    assert out.total == 0
