@@ -12,6 +12,7 @@ from ..adapters.llm import build_llm
 from ..adapters.notify import WebhookNotifier
 from ..adapters.store import SqliteStore
 from ..app.run import PROMPT, draft, readiness, script
+from ..app.selfreview import build_review
 from ..config import Settings
 from ..config import settings as default_settings
 from ..doctor import main as doctor_main
@@ -87,6 +88,25 @@ def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> N
         console.print(line)
         body.append(line)
     _notify(s, "\n".join(body))
+
+
+@app.command()
+def selfreview(
+    level: str = typer.Option("P6", help="P5 / P6 / P7"),
+    out: Path = typer.Option(None, help="输出 Markdown；不填打印到终端"),
+) -> None:
+    """一份能交上去的 STAR 自评稿 + 谈薪五阶段。"""
+    try:
+        body = build_review(level)
+    except ValueError as exc:
+        console.print(f"[red]{exc}[/]")
+        raise typer.Exit(code=2) from exc
+    if out:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(body, encoding="utf-8")
+        console.print(f"[green]已写出[/] {out}（{len(body.splitlines())} 行）")
+    else:
+        console.print(body)
 
 
 @app.command("check")

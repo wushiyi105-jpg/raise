@@ -16,6 +16,7 @@
 3. **STAR 完整度**：S/T/A/R 缺哪段点名。
 4. **谈薪稿守卫**：数字必须能在成果里找到，禁「唯一/第一/不可替代」。
 5. **台账**：按影响分排序，取前几条当主线。
+6. **能交的稿**：`selfreview` 按 P5–P7 模板选证据，直接出 STAR 自评稿 + 谈薪五阶段 + 开场三句；记录里没有的数字一个不补。
 
 ### 规则与扣分
 
@@ -33,17 +34,19 @@
 pip install -e ".[dev]"
 python -m raiseup seed
 python -m raiseup readiness --level P6
+python -m raiseup selfreview --level P6 --out 晋升自评.md
 python -m raiseup check --text "我把结账时间压到 4 小时，效率提升 37%"
 python -m raiseup serve        # http://127.0.0.1:8007
 ```
 
 包名是 `raiseup`，因为 `raise` 是 Python 关键字，不能直接 `import raise`；仓库名仍是 raise。
 
-真实种子：7 条成果（5 条带数字，2 条是「整理了一份交接文档」「负责的项目按时上线」）、目标 P6
+真实种子：12 条成果（10 条带数字，2 条是「整理了一份交接文档」「负责的项目按时上线」）、目标 P6
 要 5 条量化且 team/org 各 2 条、2 份复盘（第二份只有 A/R）。
 
-`readiness --level P6` 出来：量化 5/7（71%），team 5 条、org 2 条，P6 的条数与范围都够，不报 `level.gap`；
+`readiness --level P6` 出来：量化 10/12（83%），team 6 条、org 6 条，P6 的条数与范围都够，不报 `level.gap`；
 两条没数字的成果各扣 5；第二份复盘缺 S 和 T 各扣 4，合计 18 分。
+`selfreview --level P6` 写出 129 行：5 条 STAR 自评稿（每条 S/T/A/R 齐全）、P5–P7 能力项对照、谈薪开场三句、五阶段话术。
 `check --text "…效率提升 37%"` 会指出 37 在证据里找不到。
 
 ## 为什么不用通用大模型直接问
