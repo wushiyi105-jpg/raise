@@ -8,8 +8,9 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
+from ..adapters.llm import build_llm
 from ..adapters.store import SqliteStore
-from ..app.run import draft, readiness, script
+from ..app.run import PROMPT, draft, readiness, script
 from ..config import Settings
 from ..config import settings as default_settings
 from ..doctor import main as doctor_main
@@ -66,7 +67,8 @@ def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> N
     """模型起草（无 key 时不编）。"""
     s = _settings(db)
     store = _store(s)
-    text, notes = draft(store, s, level or None)
+    llm = build_llm(s.llm_base_url, s.llm_api_key, s.llm_model, PROMPT) if s.llm_enabled else None
+    text, notes = draft(store, s, level or None, llm)
     if text:
         console.print(text)
     for n in notes:

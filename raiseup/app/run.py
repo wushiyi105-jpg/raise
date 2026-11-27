@@ -3,28 +3,31 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
-from ..adapters.llm import build_llm
-from ..adapters.store import SqliteStore
 from ..config import Settings
 from ..domain.engine import build, top
 from ..domain.guard import check
 from ..domain.models import Readiness
+from ..ports import LLMPort, StorePort
 
-PROMPT = """把给出成果改写成晋升材料里的三段话，只能用输入里已有的数字。
-不许写"唯一""第一""不可替代"。输出 JSON：{"text": "…"}"""
+PROMPT = (Path(__file__).resolve().parents[2] / "prompts" / "material.md").read_text(encoding="utf-8")
 
 
-def readiness(store: SqliteStore, level: str | None = None) -> Readiness:
+def readiness(store: StorePort, level: str | None = None) -> Readiness:
     return build(store.list_achievements(), store.level(level), store.list_reviews())
 
 
-def draft(store: SqliteStore, settings: Settings, level: str | None = None) -> tuple[str, list[str]]:
+def draft(
+    store: StorePort,
+    settings: Settings,
+    level: str | None = None,
+    llm: LLMPort | None = None,
+) -> tuple[str, list[str]]:
     items = store.list_achievements()
-    if not settings.llm_enabled:
+    if llm is None:
         return "", []
     facts = [a.text for a in top(items, 6)]
-    llm = build_llm(settings.llm_base_url, settings.llm_api_key, settings.llm_model, PROMPT)
     try:
         data = json.loads(llm.write(PROMPT, "\n".join(facts)))
     except Exception:  # noqa: BLE001
@@ -33,5 +36,5 @@ def draft(store: SqliteStore, settings: Settings, level: str | None = None) -> t
     return text, [f.message for f in check(text, items)]
 
 
-def script(store: SqliteStore, text: str, expected: str = "0") -> list[str]:
+def script(store: StorePort, text: str, expected: str = "0") -> list[str]:
     return [f.message for f in check(text, store.list_achievements(), [expected])]
