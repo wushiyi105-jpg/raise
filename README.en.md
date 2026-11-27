@@ -51,6 +51,9 @@ You do; the tool only sorts by it.
 **What if an achievement has no number?**
 It is flagged and scored down; the tool never invents one.
 
+**Was the Docker image verified?**
+Docker is not installed on the build machine, so `docker build .` was not run and the image is unverified; only the Dockerfile and ports were checked statically.
+
 ## Commands
 
 See the Chinese README (`README.md`) for the command table with flags; every command supports `--help`.
@@ -63,13 +66,13 @@ FastAPI + Uvicorn, Jinja2, pydantic / pydantic-settings, httpx, Typer + Rich, SQ
 
 ```mermaid
 graph LR
-  A[成果] --> M[量化识别]
-  B[复盘稿] --> M[STAR 完整度]
-  C[目标职级] --> M[条数与范围]
-  M --> R[规则：无数字 / 级别差距 / STAR]
-  R --> P[模型起草]
-  P --> G[数字与措辞守卫]
-  G --> O[材料清单]
+  A[achievements] --> M[quantify]
+  B[review draft] --> M[STAR completeness]
+  C[target level] --> M[count and scope]
+  M --> R[rules: no numbers / level gap / STAR]
+  R --> P[model draft]
+  P --> G[number and wording guard]
+  G --> O[material checklist]
 ```
 
 ## Layout

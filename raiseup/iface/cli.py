@@ -60,8 +60,6 @@ def readiness_cmd(level: str = typer.Option("", help="P6 这样"), db: Path = ty
     console.print(f"合计扣 {r.penalty_total} 分")
 
 
-
-
 @app.command("draft")
 def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> None:
     """模型起草（无 key 时不编）。"""
@@ -77,8 +75,6 @@ def draft_cmd(level: str = typer.Option(""), db: Path = typer.Option(None)) -> N
         console.print("模型没开，只看 readiness")
 
 
-
-
 @app.command("check")
 def check_cmd(text: str = typer.Option(..., help="要检查的谈薪/材料稿"), db: Path = typer.Option(None)) -> None:
     """检查稿子里的数字与措辞。"""
@@ -88,8 +84,6 @@ def check_cmd(text: str = typer.Option(..., help="要检查的谈薪/材料稿")
         console.print("数字都能对上证据")
     for n in notes:
         console.print(f"  [yellow]{n}[/]")
-
-
 
 
 @app.command()
