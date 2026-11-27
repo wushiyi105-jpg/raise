@@ -9,7 +9,7 @@ description = "晋升材料：成果有没有数字、够不够 P 级、STAR 齐
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "shiyi", email = "wushiyi105@gmail.com" }]
+authors = [{ name = "小米", email = "wushiyi105@gmail.com" }]
 dependencies = [
   "fastapi>=0.115",
   "uvicorn[standard]>=0.30",
