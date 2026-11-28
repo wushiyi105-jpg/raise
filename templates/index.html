@@ -1,6 +1,6 @@
 {% from "_macros.html" import shell, head, stats, card, tag, empty, note %}
-{% call shell("Raise", "晋升材料", true) %}
-{{ head("晋升材料盘点", "量化 " ~ r.quantified ~ "/" ~ r.total ~ " 条 · 量化率 " ~ "%.0f"|format(r.ratio * 100) ~ "%") }}
+{% call shell("Raise", "成果档案", true) %}
+{{ head("评审季，证据够不够", "量化 " ~ r.quantified ~ "/" ~ r.total ~ " 条 · 量化率 " ~ "%.0f"|format(r.ratio * 100) ~ "%") }}
 
 {{ stats([
   ("成果条目", r.total, "条"),

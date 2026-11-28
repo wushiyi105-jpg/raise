@@ -1,0 +1,27 @@
+:root {
+  --bg: #FBF8F2;
+  --bg-subtle: #F5F0E6;
+  --bg-muted: #EAE3D5;
+  --card: #FFFFFF;
+  --text: #221E26;
+  --text-2: #544e5c;
+  --text-3: #6b6573;
+  --text-4: #706c75;
+  --border: #E7E0D4;
+  --border-2: #D8D0C2;
+  --border-3: #C5BBA9;
+  --accent: #4B3B5F;
+  --accent-soft: #EFE9F4;
+  --accent-ink: #3B2E4B;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --radius-lg: 14px;
+}
+:root[data-theme="dark"] {
+  --accent: #B49BCB;
+  --accent-soft: #2A2036;
+  --accent-ink: #D9C9E7;
+}
+.page-head h1 { font-family: "Songti SC", "SimSun", serif; }
+.card__head h2 { font-family: "Songti SC", "SimSun", serif; font-weight: 600; }
+
